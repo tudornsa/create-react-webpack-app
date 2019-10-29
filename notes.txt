@@ -1,0 +1,60 @@
+1. Create directory with USER_SPECIFIED_NAME
+1.1. Navigate to the created directory? / create stuff inside it!
+2. Initialize project -> npm init -y to setup project.json :: TODO: custom init values
+3. Create directory structure =>
+    "$USER_SPECIFIED_NAME" = {[
+        {
+            "$folder: public": [
+                "favicon",
+                "index.html", :: TODO: Populate it!..div id="root"
+                "logos?",
+                "robots.txt"
+            ]
+        },
+        {
+            "$folder: src": [
+                "App.css",
+                "App.js",
+                "App.test.js?",
+                "index.js", :: TODO: Populate it!...reactDOM.render part...
+                "logo.svg?"
+            ]
+        },
+        "$file: '.gitignore'",
+        "$file: 'README.md?'
+    ]}
+4. Install react and react-dom -> npm install react react-dom
+5. Install dev dependencies:
+    5.1. babel -> npm install --save-dev babel-core babel-loader babel-preset-env babel-preset-react :: TODO: run 1 at a time and check if installed corectly, if not, throw err
+    5.2. webpack -> npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin :: TODO: run 1 at a time and check if installed corectly, if not, throw err
+6. Configure Babel: create '.babelrc' file in project root directory and put presets inside => '{"presets": ["env", "react"]}'
+7. Configure Webpack: create 'webpack.config.js' file in project root directory with following content:
+    /*
+        const path = require('path');\r\n
+        const HtmlWebpackPlugin = require('html-webpack-plugin');\r\n
+        module.exports = {\r\n
+            [\t]entry: path.join(__dirname, '/src/index.js'),\r\n
+05|         output: {\r\n
+06|             [\t\t]filename: 'index.bundle.js',\r\n
+07|             path: path.join(__dirname, '/dist')},\r\n
+08|         module: {\r\n
+09|             rules: [{\r\n
+10|                 test: /\.js$/,\r\n
+11|                 exclude: /node_modules/,\r\n
+12|                 loader: 'babel-loader'\r\n
+13|             }]\r\n
+14|         },\r\n
+15|         plugins:[\r\n
+16|             new HWP(\r\n
+17|                 {template: path.join(__dirname,‘/src/index.html’)}\r\n
+18|             )\r\n
+19|         ]\r\n
+        }\r\n
+    */
+8. Add "start" and "build" scripts to package.json:
+"scripts": {
+    ...scripts,
+    "start": "webpack-dev-server --mode development --open --hot",
+    "build-dev": "webpack --mode development",
+    "build-prod": "webpack --mode production"
+}

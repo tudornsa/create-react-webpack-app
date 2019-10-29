@@ -1,199 +1,195 @@
 const shell = require("shelljs");
 const fs = require("fs");
 
+const {
+    indexHtmlTemplate
+} = require("./index-html-template");
+
+const projectName = "test-app";
+
 (function () {
-    /*TODO: USE PROMISES!!!*/
-    promisees.usethem.com.
-    //shell.echo(JSON.stringify(shell.touch("newFile.txt")));
-    // try {
-    //     echoLine(removeFile("davai.js"));
-    // } catch (error) {
-    //     //do nothing as method reports own err message...
-    // }
+    /**
+     * The actual script goes here...
+     */
 
-    // try {
-    //     echoLine(createFile("insert.txt"));
-    // } catch (error) {
-    //     //do nothing as method reports own err message...
-    //     console.log(error.message);
-    // }
+    try {
+        let createDirectoryReturn = createDirectory(projectName);
+        if (createDirectoryReturn.code === 0) {
+            try {
+                let changeDirReturn = changeDir(`./${projectName}/`);
+                if (changeDirReturn.code === 0) {
+                    try {
+                        let execReturn = execute("npm init -y");
+                        if (execReturn.code === 0) {
+                            try {
+                                execReturn = execute("npm install react react-dom");
+                                if (execReturn.code === 0) {
+                                    console.log("success!");
+                                }
+                            } catch (error) {
+                                console.log(`[${error}]`);
+                            }
+                        }
+                    } catch (error) {
+                        console.log(`[${error}]`);
+                    }
+                }
+            } catch (error) {
+                console.log(`[${error}]`);
+            }
+        }
+    } catch (error) {
+        console.log(`[${error}]`);
+    }
 
-    // try {
-    //     echoLine(createDirectory("./cda/ceva"));
-    // } catch (error) {
-    //     //do nothing as method reports own err message...
-    // }
-
-    // try {
-    //     echoLine(removeDirectory("cda"));
-    // } catch (error) {
-    //     console.log(error.message);
-    // }
-
-    // try {
-    //     echoLine(changeDir("davai"));
-    //     echoLine(shell.pwd());
-    // } catch (error) {
-    //     console.log(error.message);
-    // }
-
-    // try {
-    //     echoLine(`Before cd: ${currPath()}.`);
-    //     echoLine(changeDir("davai"));
-    // } catch (error) {
-    //     console.log(error.message);
-    // }
-
-    // try {
-    //     execute("npm install react");
-    // } catch (error) {
-    //     console.log(error.message);
-    // }
-    const content = module.export this shit in a different file
-        `<!DOCTYPE html>
-<html>
-    <head>
-        <title>Davai</title>
-    </head>
-    <body>
-        <h1>Ce sa mai ca sa cum</h1>
-    </body>
-</html>`
-
-    //echoLine(shell.find("./davai/ceva/davai.js"));
-    insertContent("insert.html", content);
 })();
 
 function echoLine(message) {
     try {
         shell.echo(message);
     } catch (error) {
-        //do nothing as method reports own err message...
+        console.log(error.message);
     }
 }
 
 function removeFile(fileName, options = null) {
-    let returnedObj = {};
-    options ? returnedObj = shell.rm(options, fileName) : returnedObj = shell.rm(fileName)
-    const {
-        code,
-        stderr
-    } = returnedObj;
-    //console.log(returnedObj);
-
-    if (code === 0) {
-        return `rm: ${fileName} has beed successfully removed.`;
+    if (options) {
+        try {
+            return shell.rm(options, fileName);
+        } catch (error) {
+            throw error;
+        }
     } else {
-        throw Error(stderr);
+        try {
+            return shell.rm(fileName);
+        } catch (error) {
+            throw error;
+        }
     }
 }
 
 function createFile(fileName) {
-    const {
-        code,
-        stderr
-    } = shell.touch(fileName);
-
-    if (code === 0) {
-        return `touch: file [${fileName.split("/").slice(-1)[0]}] successfully created in [${fileName.split("/").slice(0, -1).join("/")}/]!`;
-    } else {
-        throw Error(stderr);
+    try {
+        return shell.touch(fileName);
+    } catch (error) {
+        throw error;
     }
 }
 
 function createDirectory(dirName, options = null) {
-    let returnedObj = {};
-    options ? returnedObj = shell.mkdir(options, dirName) : returnedObj = shell.mkdir(dirName)
-
-    const {
-        code,
-        stderr
-    } = returnedObj;
-
-    if (code === 0) {
-        const dname = dirName.split("/"); //TODO: use this?
-        return `mkdir: directory [${dirName}] has been created`;
+    if (options) {
+        try {
+            return shell.mkdir(options, dirName);
+        } catch (error) {
+            throw error;
+        }
     } else {
-        throw Error(stderr);
+        try {
+            return shell.mkdir(dirName);
+        } catch (error) {
+            throw error;
+        }
     }
 }
 
 function removeDirectory(dirName) {
-    const {
-        code,
-        stderr
-    } = shell.rm("-rf", dirName);
-
-    if (code === 0) {
-        return `rm: directory [${dirName}] deleted!`;
-    } else {
-        throw Error(stderr);
+    try {
+        return shell.rm("-rf", dirName);
+    } catch (error) {
+        throw error;
     }
 }
 
 function currPath() {
-    const {
-        code,
-        stdout,
-        stderr
-    } = shell.pwd();
-
-    if (code === 0) {
-        return stdout;
-    } else {
-        throw Error(stderr);
+    try {
+        return shell.pwd();
+    } catch (error) {
+        throw error;
     }
 }
 
 function changeDir(dir) {
-    const {
-        code,
-        stderr
-    } = shell.cd(dir);
-
-    if (code === 0) {
-        return currPath();
-    } else {
-        throw Error(stderr);
+    try {
+        const cdReturnedObj = shell.cd(dir);
+        if (cdReturnedObj.code === 0) {
+            try {
+                const pwdReturnedObj = shell.pwd();
+                if (pwdReturnedObj.code === 0) { ///Redundant because of try...catch?
+                    cdReturnedObj.stdout = pwdReturnedObj.stdout;
+                    return cdReturnedObj;
+                }
+            } catch (error) {
+                throw error;
+            }
+        }
+    } catch (error) {
+        throw error;
     }
 }
 
 function execute(command) {
-    if (command) {
-        const {
-            code,
-            stdout,
-            stderr
-        } = shell.exec(command);
-
-        if (code === 0) {
-            return stdout
-        } else {
-            throw Error(stderr);
-        }
-    } else {
-        throw Error("exec: no command to execute!");
+    try {
+        return shell.exec(command);
+    } catch (error) {
+        throw error
     }
 }
 
 function insertContent(file, content) {
     try {
-        let {
+        const {
             code
         } = shell.find(file);
 
         if (code === 0) {
-            fs.writeFile(file, content, (err) => {
-                if (err) throw err;
-            });
-        }
+            try {
+                fs.writeFile(file, content, (err) => {
+                    if (err) {
+                        throw err;
+                    } else {
+                        return true;
+                    }
 
+                });
+            } catch (error) {
+                throw error; //redundant because of callback?
+            }
+        } else {
+            return false;
+        }
     } catch (error) {
-        console.log(error.message);
-        return;
+        throw error;
     }
 }
 
-function updateContent(newData) {
-
+function createFileAndInsert(fileName, content) {
+    try {
+        const createReturnedObj = createFile(fileName);
+        if (createReturnedObj.code === 0) {
+            try {
+                insertContent(fileName, content);
+            } catch (error) {
+                throw error;
+            }
+        }
+    } catch (error) {
+        throw error;
+    }
 }
+
+function readFile(fileName) {
+    try {
+        return shell.cat(fileName);
+    } catch (error) {
+        throw error;
+    }
+}
+
+function updateScripts(json, newScripts) {
+    return updateJsonObject(json.scripts, newScripts);
+}
+
+function updateJsonObject(jsonObj, newJsonObj) {
+    return Object.assign(jsonObj, newJsonObj);
+}
+//TODO: Write unit tests for all functions!
