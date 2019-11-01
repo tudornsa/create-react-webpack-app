@@ -34,21 +34,21 @@
         const HtmlWebpackPlugin = require('html-webpack-plugin');\r\n
         module.exports = {\r\n
             [\t]entry: path.join(__dirname, '/src/index.js'),\r\n
-05|         output: {\r\n
-06|             [\t\t]filename: 'index.bundle.js',\r\n
-07|             path: path.join(__dirname, '/dist')},\r\n
-08|         module: {\r\n
-09|             rules: [{\r\n
-10|                 test: /\.js$/,\r\n
-11|                 exclude: /node_modules/,\r\n
-12|                 loader: 'babel-loader'\r\n
-13|             }]\r\n
-14|         },\r\n
-15|         plugins:[\r\n
-16|             new HWP(\r\n
-17|                 {template: path.join(__dirname,‘/src/index.html’)}\r\n
-18|             )\r\n
-19|         ]\r\n
+            output: {\r\n
+                [\t\t]filename: 'index.bundle.js',\r\n
+                path: path.join(__dirname, '/dist')},\r\n
+            module: {\r\n
+                rules: [{\r\n
+                    test: /\.js$/,\r\n
+                    exclude: /node_modules/,\r\n
+                    loader: 'babel-loader'\r\n
+                }]\r\n
+            },\r\n
+            plugins:[\r\n
+                new HWP(\r\n
+                    {template: path.join(__dirname,‘/src/index.html’)}\r\n
+                )\r\n
+            ]\r\n
         }\r\n
     */
 8. Add "start" and "build" scripts to package.json:
